@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import { setList, updateItem } from'./../services';
+import { setList, updateItem } from'../services';
 
-export default class Listar extends Component {
+export default class Register extends Component {
 
   constructor(props) {
     super(props);

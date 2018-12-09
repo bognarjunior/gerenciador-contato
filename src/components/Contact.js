@@ -48,14 +48,21 @@ export default class componentName extends Component {
     } = this.state;
 
     return (
-      <div>
-        <p>Nome: {name}</p>
-        <p>Email: {email}</p>
-        <p>Telefone: {phone}</p>
-        <button className="btn btn-primary" onClick={this.updateItem}>Editar</button>
-        <button className="btn btn-danger" onClick={this.deleteItem}>Deletar</button>
-      </div>
+      <tr>
+        <td>{name}</td>
+        <td>{email}</td>
+        <td>{phone}</td>
+        <td>
+          <button className="btn btn-primary" style={styles.button} onClick={this.updateItem}>Editar</button>
+          <button className="btn btn-danger" onClick={this.deleteItem}>Deletar</button>
+        </td>
+      </tr>
     )
   }
 }
 
+const styles = {
+  button: {
+    'margin-right': '10px'
+  }
+}

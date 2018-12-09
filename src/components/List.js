@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { getList, deleteItem } from'./../services';
-import Contato from './Contato';
+import { getList, deleteItem } from'../services';
+import Contact from './Contact';
 
 export default class Listar extends Component {
   
@@ -35,7 +35,21 @@ export default class Listar extends Component {
       )
     }
 
-    return listContacts.map(item => <Contato {...this.props} item={item} deleteItem={this.deleteItemStore} key={item.email}/>);
+    return (
+      <table className="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {listContacts.map(item => <Contact {...this.props} item={item} deleteItem={this.deleteItemStore} key={item.email}/>)}
+        </tbody>
+      </table>
+    ) 
   }
   
   
