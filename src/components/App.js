@@ -29,7 +29,7 @@ class App extends Component {
 
 const styles = {
   main: {
-    'margin-top': '20px'
+    marginTop: '20px'
   }
 }
 

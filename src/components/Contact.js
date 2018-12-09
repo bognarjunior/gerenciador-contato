@@ -35,7 +35,7 @@ export default class componentName extends Component {
 
   updateItem = () => {
     this.props.history.push({
-      pathname: '/cadastro',
+      pathname: '/register',
       contact:  this.state 
     });
   }
@@ -63,6 +63,6 @@ export default class componentName extends Component {
 
 const styles = {
   button: {
-    'margin-right': '10px'
+    marginRight: '10px'
   }
 }
