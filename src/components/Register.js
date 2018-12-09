@@ -1,12 +1,34 @@
 import React, { Component } from 'react';
-
+import FormValidator from '../utils/FormValidator';
 import { setList, updateItem } from'../services';
 
 export default class Register extends Component {
 
   constructor(props) {
     super(props);
-  
+
+    this.validator = new FormValidator([
+      { 
+        field: 'name', 
+        method: 'isEmpty', 
+        validWhen: false, 
+        message: 'Nome é obrigatório.' 
+      },
+      { 
+        field: 'email',
+        method: 'isEmail', 
+        validWhen: true, 
+        message: 'Este não é um email válido.'
+      },
+      {
+        field: 'phone', 
+        method: 'matches',
+        args: [/^\(?\d\d\)? ?\d\d\d\d\d-?\d\d\d\d$/],
+        validWhen: true, 
+        message: 'Adicione um número de telefone válido.'
+      },
+    ]);
+
     this.state = {
       contact: {
         id: null,
@@ -14,7 +36,7 @@ export default class Register extends Component {
         email: "",
         phone: ""
       },
-      isInValid: false
+      validation: this.validator.valid(),
     };
   }
  
@@ -32,9 +54,6 @@ export default class Register extends Component {
   }
 
   handleName = (e) => {
-    this.setState({
-      isInValid: false
-    });
     let contact = Object.assign({}, this.state.contact);
     contact.name = e.target.value;
     this.setState({contact});
@@ -60,19 +79,19 @@ export default class Register extends Component {
   }
 
   saveItens = () => {
-    if(!this.validate()){
-      this.setState({
-        isInValid: true
-      })
-      return;
-    };
 
-    const { id } = this.state.contact;
+    const validation = this.validator.validate(this.state.contact);
+    this.setState({ validation });
+    this.submitted = true;
 
-    if (!id) {
-      this.setIdAndSave(id);
-    } else {
-      this.updateContact();
+    if (validation.isValid) {
+      const { id } = this.state.contact;
+
+      if (!id) {
+        this.setIdAndSave(id);
+      } else {
+        this.updateContact();
+      }
     }
   }
 
@@ -86,11 +105,6 @@ export default class Register extends Component {
     this.props.history.push("/");
   }
   
-  validate = () => {
-    const { name } = this.state.contact;
-    return (name.trim().length < 3) ? false : true;
-  }
-  
   cancelForm = () => {
     this.setState({
       id: "",
@@ -102,22 +116,27 @@ export default class Register extends Component {
   }
 
   render() {
+    let validation = this.submitted ?  this.validator.validate(this.state.contact) : this.state.validation;
+
     return (
       <div>
         <h1>Cadastrar Contato</h1>
         <div className="form-group">
           <label htmlFor="inputName">Nome</label>
           <input type="text" value={this.state.contact.name} className="form-control" id="inputName" placeholder="Digite o nome" onChange={this.handleName}/>
+          <span className="help-block text-danger">{validation.name.message}</span>
         </div>
         
         <div className="form-group">
           <label htmlFor="inputEmail">Email</label>
           <input type="email" value={this.state.contact.email} className="form-control" id="inputEmail" placeholder="exemplo@email.com.br" onChange={this.handleEmail}/>
+          <span className="help-block text-danger">{validation.email.message}</span>
         </div>
         
         <div className="form-group">
           <label htmlFor="inputPhone">Telefone</label>
           <input type="text" value={this.state.contact.phone} className="form-control" id="inputPhone" placeholder="99 99999-9999" onChange={this.handlePhone}/>
+          <span className="help-block text-danger">{validation.phone.message}</span>
         </div>
         
         <div className="d-flex justify-content-around">
