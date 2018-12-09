@@ -43,11 +43,11 @@ export default class Listar extends Component {
     return (
       <div>
         <h1>Lista de Contatos</h1>
-      {
-        this.state.isLoad ?
-          this.renderList()
-        : null
-      }
+        {
+          this.state.isLoad ?
+            this.renderList()
+          : null
+        }
       </div>
     )
   }

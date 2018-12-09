@@ -34,7 +34,10 @@ export default class componentName extends Component {
   }
 
   updateItem = () => {
-    this.props.history.push("/cadastro");
+    this.props.history.push({
+      pathname: '/cadastro',
+      contact:  this.state 
+    });
   }
 
   render() {

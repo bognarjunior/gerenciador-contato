@@ -23,10 +23,21 @@ export const setList = (data) => {
   }
 }
 
+export const updateItem = (data) => {
+  let storage = localStorage.getItem(KEYSTORAGE);
+  storage = JSON.parse(storage);
+  const items = storage.map(item => {
+    if(item.id === data.id) {
+      return data;
+    }
+    return item
+  });
+  localStorage.setItem(KEYSTORAGE, JSON.stringify(items));
+}
+
 export const deleteItem = (data) => {
   let storage = localStorage.getItem(KEYSTORAGE);
   storage = JSON.parse(storage);
   const items = storage.filter(item => item.id !== data.id);
   localStorage.setItem(KEYSTORAGE, JSON.stringify(items));
-  
 }

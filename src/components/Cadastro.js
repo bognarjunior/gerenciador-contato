@@ -1,17 +1,35 @@
 import React, { Component } from 'react';
 
-import { setList } from'./../services';
+import { setList, updateItem } from'./../services';
 
 export default class Listar extends Component {
-  state = {
-    contact: {
-      id: null,
-      name: "",
-      email: "",
-      phone: ""
-    },
-    isInValid: false
-  };
+
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      contact: {
+        id: null,
+        name: "",
+        email: "",
+        phone: ""
+      },
+      isInValid: false
+    };
+  }
+ 
+
+  componentDidMount() {
+    if (this.props.location.contact !== undefined) {
+      const {
+        contact
+      } = this.props.location
+      
+      this.setState({
+        contact
+      })
+    }
+  }
 
   handleName = (e) => {
     this.setState({
@@ -34,14 +52,11 @@ export default class Listar extends Component {
     this.setState({contact});
   }
 
-  setId = () => {
-    const { id } = this.state.contact;
-    if (!id) {
-      const d = new Date();
-      let contact = Object.assign({}, this.state.contact);
-      contact.id = d.getTime();
-      this.setState({contact}, this.saveAndRedirect);
-    }
+  setIdAndSave = (id) => {
+    const d = new Date();
+    let contact = Object.assign({}, this.state.contact);
+    contact.id = d.getTime();
+    this.setState({contact}, this.saveAndRedirect);
   }
 
   saveItens = () => {
@@ -51,7 +66,19 @@ export default class Listar extends Component {
       })
       return;
     };
-    this.setId();
+
+    const { id } = this.state.contact;
+
+    if (!id) {
+      this.setIdAndSave(id);
+    } else {
+      this.updateContact();
+    }
+  }
+
+  updateContact = () => {
+    updateItem(this.state.contact);
+    this.props.history.push("/");
   }
 
   saveAndRedirect = () => {
@@ -80,17 +107,17 @@ export default class Listar extends Component {
         <h1>Cadastrar Contato</h1>
         <div className="form-group">
           <label htmlFor="inputName">Nome</label>
-          <input type="text" className="form-control" id="inputName" placeholder="Digite o nome" onChange={this.handleName}/>
+          <input type="text" value={this.state.contact.name} className="form-control" id="inputName" placeholder="Digite o nome" onChange={this.handleName}/>
         </div>
         
         <div className="form-group">
           <label htmlFor="inputEmail">Email</label>
-          <input type="email" className="form-control" id="inputEmail" placeholder="exemplo@email.com.br" onChange={this.handleEmail}/>
+          <input type="email" value={this.state.contact.email} className="form-control" id="inputEmail" placeholder="exemplo@email.com.br" onChange={this.handleEmail}/>
         </div>
         
         <div className="form-group">
           <label htmlFor="inputPhone">Telefone</label>
-          <input type="text" className="form-control" id="inputPhone" placeholder="99 99999-9999" onChange={this.handlePhone}/>
+          <input type="text" value={this.state.contact.phone} className="form-control" id="inputPhone" placeholder="99 99999-9999" onChange={this.handlePhone}/>
         </div>
         
         <div className="d-flex justify-content-around">
