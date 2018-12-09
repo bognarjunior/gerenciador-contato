@@ -1,8 +1,89 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
+import { setList } from'./../services';
 
 export default class Listar extends Component {
+    state = {
+        contact: {
+            name: "",
+            email: "",
+            phone: "",
+            date: ""
+        },
+        isInValid: false
+    };
+
+    handleName = (e) => {
+        this.setState({
+            isInValid: false
+        });
+        let contact = Object.assign({}, this.state.contact);
+        contact.name = e.target.value;
+        this.setState({contact});
+      }
+
+    handleEmail = (e) => {
+        let contact = Object.assign({}, this.state.contact);
+        contact.email = e.target.value;
+        this.setState({contact});
+    }
+
+    handlePhone = (e) => {
+        let contact = Object.assign({}, this.state.contact);
+        contact.phone = e.target.value;
+        this.setState({contact});
+    }
+
+    saveItens = () => {
+        if(!this.validate()){
+          this.setState({
+            isInValid: true
+          })
+          return;
+        };
+        setList(this.state.contact);
+        this.props.history.push("/");
+      }
     
+    validate = () => {
+        const { name } = this.state.contact;
+        return (name.trim().length < 3) ? false : true;
+    }
+    
+    cancelForm = () => {
+        this.setState({
+            name: "",
+            email: "",
+            phone: "",
+            date: "",
+        });
+        this.props.history.push("/");
+    }
+
   render() {
-    return (<h1>Cadastro de contatos</h1>)
+    return (
+        <div>
+            <h1>Cadastrar Contato</h1>
+            <div className="form-group">
+                <label htmlFor="inputName">Nome</label>
+                <input type="text" className="form-control" id="inputName" placeholder="Digite o nome" onChange={this.handleName}/>
+            </div>
+            
+            <div className="form-group">
+                <label htmlFor="inputEmail">Email</label>
+                <input type="email" className="form-control" id="inputEmail" placeholder="exemplo@email.com.br" onChange={this.handleEmail}/>
+            </div>
+            
+            <div className="form-group">
+                <label htmlFor="inputPhone">Telefone</label>
+                <input type="text" className="form-control" id="inputPhone" placeholder="99 99999-9999" onChange={this.handlePhone}/>
+            </div>
+            
+            <div className="d-flex justify-content-around">
+              <button className="btn btn-primary" onClick={this.saveItens}>Salvar</button>
+              <button className="btn btn-danger" onClick={this.cancelForm}>Cancelar</button>
+            </div>
+        </div>
+    )
   }
 }
