@@ -1,8 +1,10 @@
-#Gerenciador de contatos em React
+# Gerenciador de contatos em React
 
 
 Esse aplicativo tem como objetivo gerenciar os contatos do usuário.
 
+### Campos 
+Nome, telefone e endereço de emai
 
 ## Funcionalidades
 
