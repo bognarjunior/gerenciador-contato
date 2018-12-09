@@ -22,3 +22,11 @@ export const setList = (data) => {
     localStorage.setItem(KEYSTORAGE, JSON.stringify(contacts));
   }
 }
+
+export const deleteItem = (data) => {
+  let storage = localStorage.getItem(KEYSTORAGE);
+  storage = JSON.parse(storage);
+  const items = storage.filter(item => item.id !== data.id);
+  localStorage.setItem(KEYSTORAGE, JSON.stringify(items));
+  
+}
