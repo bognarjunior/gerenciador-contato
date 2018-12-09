@@ -1,10 +1,12 @@
 # Gerenciador de contatos em React
 
-
 Esse aplicativo tem como objetivo gerenciar os contatos do usuário.
 
 ### Campos 
 Nome, telefone e email
+
+### Pacotes intalados
+react-router, react-router-dom, validator
 
 ## Funcionalidades
 
